@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class RecipesRemoteDataSource @Inject constructor(private val recipeService: RecipeService) : RemoteDataSource{
 
-    override suspend fun getRecipes(): List<RecipeRequest>{
-        return recipeService.getRecipes().results
+    override suspend fun getRecipes(query: String, page: Int, itemsPerPage: Int): List<RecipeRequest>{
+        return recipeService.getRecipes(query, page, itemsPerPage).results
     }
 }

@@ -1,8 +1,8 @@
-package com.example.recipes.data.local
+package com.example.recipes.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.recipes.data.local.RemoteKeys.Companion.TABLE_NAME
+import com.example.recipes.data.local.entities.RemoteKeys.Companion.TABLE_NAME
 
 @Entity(tableName = TABLE_NAME)
 data class RemoteKeys(

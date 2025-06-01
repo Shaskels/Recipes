@@ -1,13 +1,12 @@
-package com.example.recipes.data.local
+package com.example.recipes.data.local.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.example.recipes.data.local.StepsEntity.Companion.ID_COLUMN_NAME
-import com.example.recipes.data.local.StepsEntity.Companion.RECIPE_ID_COLUMN_NAME
-import com.example.recipes.data.local.StepsEntity.Companion.TABLE_NAME
-
+import com.example.recipes.data.local.entities.StepsEntity.Companion.ID_COLUMN_NAME
+import com.example.recipes.data.local.entities.StepsEntity.Companion.RECIPE_ID_COLUMN_NAME
+import com.example.recipes.data.local.entities.StepsEntity.Companion.TABLE_NAME
 
 @Entity(
     tableName = TABLE_NAME,
@@ -22,7 +21,7 @@ data class StepsEntity(
     @PrimaryKey
     @ColumnInfo(ID_COLUMN_NAME)
     val id: Int,
-    @ColumnInfo(RECIPE_ID_COLUMN_NAME)
+    @ColumnInfo(RECIPE_ID_COLUMN_NAME, index = true)
     val recipeId: Int,
     @ColumnInfo("name")
     val number: Int,

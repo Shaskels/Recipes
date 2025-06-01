@@ -10,5 +10,5 @@ data class IngredientsRequest (
     @SerializedName("amount")
     val amount: Double,
     @SerializedName("units")
-    val units: String,
+    val units: String = "",
 )

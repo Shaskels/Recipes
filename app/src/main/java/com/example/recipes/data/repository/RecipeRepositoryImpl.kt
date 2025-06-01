@@ -8,25 +8,28 @@ import androidx.paging.map
 import com.example.recipes.data.local.RecipeDatabase
 import com.example.recipes.data.remote.RecipeRemoteMediator
 import com.example.recipes.data.remote.RecipeService
-import com.example.recipes.domain.Ingredient
+import com.example.recipes.data.remote.entities.toRecipe
 import com.example.recipes.domain.Recipe
-import com.example.recipes.domain.Step
+import com.example.recipes.domain.repository.RecipesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class RecipeRepository(
+class RecipeRepositoryImpl @Inject constructor(
     private val service: RecipeService,
     private val database: RecipeDatabase,
-) {
-    @OptIn(ExperimentalPagingApi::class)
-    fun getRecipesStream(): Flow<PagingData<Recipe>> {
-        val pagingSourceFactory = { database.recipeDao().getAll() }
+) : RecipesRepository {
 
+    override fun getRecipesStream(query: String): Flow<PagingData<Recipe>> {
 
+        val dbQuery = "%${query.trim().lowercase()}%"
+        val pagingSourceFactory = { database.recipeDao().getAll(dbQuery) }
+
+        @OptIn(ExperimentalPagingApi::class)
         return Pager(
             config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, enablePlaceholders = false),
             remoteMediator = RecipeRemoteMediator(
-                "query",
+                query,
                 service,
                 database
             ),
@@ -34,18 +37,23 @@ class RecipeRepository(
         ).flow.map {
             it.map { recipe ->
                 Recipe(
-                    recipe.recipeEntity.title,
-                    recipe.recipeEntity.image,
-                    recipe.recipeEntity.spoonacularScore,
-                    recipe.recipeEntity.aggregateLikes,
-                    recipe.ingredients.map { ing -> Ingredient(ing.name, ing.amount, ing.unit) },
-                    recipe.recipeEntity.readyInMinutes,
-                    recipe.steps.map { st -> Step(st.number, st.step) })
+                    recipe.idInApi,
+                    recipe.title,
+                    recipe.image,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null)
             }
         }
     }
 
+    override suspend fun getRecipeById(idInApi: Int): Recipe {
+        return service.getRecipeById(idInApi).toRecipe()
+    }
+
     companion object {
-        const val NETWORK_PAGE_SIZE = 30
+        const val NETWORK_PAGE_SIZE = 50
     }
 }

@@ -1,6 +1,6 @@
 package com.example.recipes.di
 
-import com.example.recipes.data.repository.RecipesRepositoryImpl
+import com.example.recipes.data.repository.RecipeRepositoryImpl
 import com.example.recipes.domain.repository.RecipesRepository
 import dagger.Binds
 import dagger.Module
@@ -12,5 +12,5 @@ import dagger.hilt.components.SingletonComponent
 interface DomainModule {
 
     @Binds
-    fun bindRecipesRepository(recipesRepositoryImpl: RecipesRepositoryImpl): RecipesRepository
+    fun bindRecipesRepository(recipesRepositoryImpl: RecipeRepositoryImpl): RecipesRepository
 }

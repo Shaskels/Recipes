@@ -48,6 +48,9 @@ android {
 
 dependencies {
 
+    //paging library
+    implementation("androidx.paging:paging-runtime:3.3.6")
+
     //hilt
     implementation("com.google.dagger:hilt-android:2.56.2")
     implementation(libs.androidx.legacy.support.v4)
@@ -59,6 +62,7 @@ dependencies {
     //room
     ksp("androidx.room:room-compiler:2.7.1")
     implementation("androidx.room:room-ktx:2.7.1")
+    implementation("androidx.room:room-paging:2.7.1")
 
 
     //retrofit

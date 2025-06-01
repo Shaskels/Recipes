@@ -7,15 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipes.R
 import com.example.recipes.presentation.RecipeListAdapter
-import com.example.recipes.presentation.RecipeListState
 import com.example.recipes.presentation.RecipeListViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RecipeListFragment : Fragment() {
@@ -31,9 +34,6 @@ class RecipeListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        viewModel.recipeListState.observe(viewLifecycleOwner) { result ->
-            renderState(result)
-        }
         return inflater.inflate(R.layout.fragment_recipe_list, container, false)
     }
 
@@ -41,7 +41,13 @@ class RecipeListFragment : Fragment() {
         val recipeList: RecyclerView = view.findViewById(R.id.recipe_list)
         val searchView: SearchView = view.findViewById(R.id.searchView)
 
-        adapter = RecipeListAdapter(ArrayList())
+        adapter = RecipeListAdapter() { recipe ->
+            parentFragmentManager.beginTransaction().apply {
+                add(R.id.fragment_container, RecipeFragment.newInstance(recipe.idInApi))
+                addToBackStack(RecipeFragment.RECIPE_FRAGMENT_IN_BACKSTACK)
+                commit()
+            }
+        }
         recipeList.adapter = adapter
         recipeList.layoutManager = LinearLayoutManager(context)
         recipeList.addItemDecoration(
@@ -50,31 +56,27 @@ class RecipeListFragment : Fragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
-        viewModel.getRecipesList()
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.recipes.collectLatest {
+                    adapter.submitData(it)
+                }
+            }
+        }
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                adapter.getFilter().filter(query)
+                viewModel.onQueryChanged(query ?: "")
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                adapter.getFilter().filter(newText);
+                viewModel.onQueryChanged(newText ?: "")
                 return true
             }
 
         })
     }
 
-    private fun renderState(state: RecipeListState) {
-        when (state) {
-            is RecipeListState.Loading -> Toast.makeText(context, "Loading..", Toast.LENGTH_SHORT)
-                .show()
-
-            is RecipeListState.Error -> Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
-            is RecipeListState.Success -> {
-                adapter.setNewRecipes(state.recipes)
-            }
-        }
-    }
 }
