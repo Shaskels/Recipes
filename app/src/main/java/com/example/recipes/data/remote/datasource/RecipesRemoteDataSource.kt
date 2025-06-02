@@ -9,4 +9,8 @@ class RecipesRemoteDataSource @Inject constructor(private val recipeService: Rec
     override suspend fun getRecipes(query: String, page: Int, itemsPerPage: Int): List<RecipeRequest>{
         return recipeService.getRecipes(query, page, itemsPerPage).results
     }
+
+    override suspend fun getRecipeById(id: Int): RecipeRequest {
+        return recipeService.getRecipeById(id)
+    }
 }

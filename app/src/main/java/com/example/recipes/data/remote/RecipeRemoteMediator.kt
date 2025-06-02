@@ -9,11 +9,10 @@ import androidx.room.withTransaction
 import com.example.recipes.data.local.RecipeDatabase
 import com.example.recipes.data.local.entities.RecipeEntity
 import com.example.recipes.data.local.entities.RemoteKeys
+import com.example.recipes.data.remote.datasource.RemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import okhttp3.internal.wait
 import retrofit2.HttpException
 import java.io.IOException
 import java.util.Locale
@@ -24,7 +23,7 @@ private const val STARTING_PAGE_INDEX = 1
 @OptIn(ExperimentalPagingApi::class)
 class RecipeRemoteMediator(
     private val query: String,
-    private val service: RecipeService,
+    private val remoteDataSource: RemoteDataSource,
     private val recipeDatabase: RecipeDatabase,
 ) : RemoteMediator<Int, RecipeEntity>() {
 
@@ -77,13 +76,13 @@ class RecipeRemoteMediator(
         try {
             Log.e("Mediator", page.toString())
             val apiResponse =
-                service.getRecipes(
+                remoteDataSource.getRecipes(
                     apiQuery,
                     (page - 1) * state.config.pageSize,
                     state.config.pageSize
                 )
 
-            val recipes = apiResponse.results
+            val recipes = apiResponse
             Log.e("Mediator", recipes.size.toString())
             val endOfPaginationReached = recipes.isEmpty()
             recipeDatabase.withTransaction {

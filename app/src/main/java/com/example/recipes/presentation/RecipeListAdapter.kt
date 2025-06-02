@@ -44,7 +44,7 @@ class RecipeListAdapter(private val onItemClick: OnItemClick) :
     companion object {
         private val RECIPE_DIFF_CALLBACK = object : DiffUtil.ItemCallback<Recipe>() {
             override fun areItemsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {
-                return oldItem::class == newItem::class
+                return oldItem.idInApi == newItem.idInApi
             }
 
             override fun areContentsTheSame(oldItem: Recipe, newItem: Recipe): Boolean {

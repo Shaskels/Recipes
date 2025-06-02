@@ -18,9 +18,9 @@ import com.example.recipes.data.local.entities.StepsEntity.Companion.TABLE_NAME
     )]
 )
 data class StepsEntity(
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(ID_COLUMN_NAME)
-    val id: Int,
+    val id: Int = 0,
     @ColumnInfo(RECIPE_ID_COLUMN_NAME, index = true)
     val recipeId: Int,
     @ColumnInfo("name")

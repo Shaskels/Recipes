@@ -6,8 +6,12 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.recipes.data.local.RecipeDatabase
+import com.example.recipes.data.local.entities.IngredientsEntity
+import com.example.recipes.data.local.entities.RecipeEntity
+import com.example.recipes.data.local.entities.StepsEntity
+import com.example.recipes.data.local.entities.toRecipe
 import com.example.recipes.data.remote.RecipeRemoteMediator
-import com.example.recipes.data.remote.RecipeService
+import com.example.recipes.data.remote.datasource.RemoteDataSource
 import com.example.recipes.data.remote.entities.toRecipe
 import com.example.recipes.domain.Recipe
 import com.example.recipes.domain.repository.RecipesRepository
@@ -16,7 +20,7 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class RecipeRepositoryImpl @Inject constructor(
-    private val service: RecipeService,
+    private val remoteDataSource: RemoteDataSource,
     private val database: RecipeDatabase,
 ) : RecipesRepository {
 
@@ -27,10 +31,14 @@ class RecipeRepositoryImpl @Inject constructor(
 
         @OptIn(ExperimentalPagingApi::class)
         return Pager(
-            config = PagingConfig(pageSize = NETWORK_PAGE_SIZE, enablePlaceholders = false),
+            config = PagingConfig(
+                pageSize = NETWORK_PAGE_SIZE,
+                initialLoadSize = NETWORK_PAGE_SIZE,
+                enablePlaceholders = true
+            ),
             remoteMediator = RecipeRemoteMediator(
                 query,
-                service,
+                remoteDataSource,
                 database
             ),
             pagingSourceFactory = pagingSourceFactory
@@ -44,13 +52,50 @@ class RecipeRepositoryImpl @Inject constructor(
                     null,
                     null,
                     null,
-                    null)
+                    null
+                )
             }
         }
     }
 
     override suspend fun getRecipeById(idInApi: Int): Recipe {
-        return service.getRecipeById(idInApi).toRecipe()
+        val res = database.recipeDao().getByApiId(idInApi)
+        if (res.recipeEntity.aggregateLikes != null) {
+            return res.toRecipe()
+        } else {
+            val recipeRequest = remoteDataSource.getRecipeById(idInApi)
+            val ingredients = recipeRequest.extendedIngredients.map {
+                IngredientsEntity(
+                    it.id,
+                    res.recipeEntity.id,
+                    it.name,
+                    it.amount,
+                    it.units ?: "",
+                )
+            }
+            val steps = recipeRequest.analyzedInstructions[0].steps.map {
+                StepsEntity(
+                    recipeId = res.recipeEntity.id,
+                    number = it.number,
+                    step = it.step,
+                )
+            }
+            database.recipeDao().updateRecipe(
+                RecipeEntity(
+                    res.recipeEntity.id,
+                    res.recipeEntity.idInApi,
+                    recipeRequest.image,
+                    recipeRequest.title,
+                    recipeRequest.readyInMinutes,
+                    recipeRequest.aggregateLikes,
+                    recipeRequest.spoonacularScore,
+                    res.recipeEntity.lastUpdate
+                )
+            )
+            database.ingredientsDao().insertAll(ingredients)
+            database.stepsDao().insertAll(steps)
+            return recipeRequest.toRecipe()
+        }
     }
 
     companion object {

@@ -27,6 +27,9 @@ class RecipeListViewModel @Inject constructor(
     private val _selectedRecipe = MutableLiveData<RecipeState>()
     val selectedRecipe = _selectedRecipe
 
+    private val _shouldScroll = MutableStateFlow(false)
+    val shouldScroll = _shouldScroll
+
     private val _search = MutableStateFlow("")
     private val search = _search.asStateFlow()
 
@@ -38,6 +41,7 @@ class RecipeListViewModel @Inject constructor(
 
     fun onQueryChanged(query: String) {
         _search.value = query
+        _shouldScroll.value = true
     }
 
     fun getRecipe(id: Int){
@@ -52,6 +56,5 @@ class RecipeListViewModel @Inject constructor(
             }
         }
     }
-
 
 }
