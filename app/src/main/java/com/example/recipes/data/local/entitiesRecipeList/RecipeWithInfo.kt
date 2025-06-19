@@ -1,4 +1,4 @@
-package com.example.recipes.data.local.entities
+package com.example.recipes.data.local.entitiesRecipeList
 
 import androidx.room.Embedded
 import androidx.room.Relation

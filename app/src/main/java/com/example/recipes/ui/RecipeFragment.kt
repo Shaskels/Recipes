@@ -9,11 +9,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipes.R
 import com.example.recipes.domain.Ingredient
+import com.example.recipes.domain.Recipe
 import com.example.recipes.domain.Step
 import com.example.recipes.presentation.RecipeListViewModel
 import com.example.recipes.presentation.RecipeState
@@ -24,14 +26,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.ArrayList
 import java.util.Locale
 
-
-private const val SELECTED_ITEM = "selectedItem"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [RecipeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 @AndroidEntryPoint
 class RecipeFragment : Fragment() {
 
@@ -46,9 +40,9 @@ class RecipeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            selectedItemId = it.getInt(SELECTED_ITEM)
-        }
+        (activity as MainActivity).supportActionBar?.title = "Recipes"
+        val safeArgs: RecipeFragmentArgs by navArgs()
+        selectedItemId = safeArgs.selectedItem
     }
 
     override fun onCreateView(
@@ -86,39 +80,32 @@ class RecipeFragment : Fragment() {
 
     private fun renderState(state: RecipeState) {
         when (state) {
-            is RecipeState.Error -> Toast.makeText(context, "", Toast.LENGTH_SHORT).show()
+            is RecipeState.Error -> Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show()
             is RecipeState.Loading -> Toast.makeText(context, "Loading...", Toast.LENGTH_SHORT)
                 .show()
 
             is RecipeState.Success -> {
-                likes.text = state.recipe.likes.toString()
-                score.text = "%.2f".format(Locale.ROOT, state.recipe.score)
-                cookingTime.text = state.recipe.cookTime.toString()
-                name.text = state.recipe.name
-                Picasso.get().load(state.recipe.image).into(image)
-                val uiModel = ArrayList<UiModel>()
-                state.recipe.ingredients?.map { UiModel.IngredientItem(it) }
-                    ?.let { uiModel.addAll(it) }
-                state.recipe.instructions?.let { UiModel.StepsItem(it) }?.let { uiModel.add(it) }
-                adapter.setNewItems(uiModel)
+                setUi(state.recipe)
             }
         }
+    }
+
+    private fun setUi(recipe: Recipe) {
+        likes.text = recipe.likes.toString()
+        score.text = "%.2f".format(Locale.ROOT, recipe.score)
+        cookingTime.text = recipe.cookTime.toString()
+        name.text = recipe.name
+        Picasso.get().load(recipe.image).placeholder(R.drawable.nophoto).error(R.drawable.nophoto)
+            .into(image)
+        val uiModel = ArrayList<UiModel>()
+        recipe.ingredients?.map { UiModel.IngredientItem(it) }
+            ?.let { uiModel.addAll(it) }
+        recipe.instructions?.let { UiModel.StepsItem(it) }?.let { uiModel.add(it) }
+        adapter.setNewItems(uiModel)
     }
 
     sealed class UiModel() {
         data class IngredientItem(val ingredient: Ingredient) : UiModel()
         data class StepsItem(val stepsItem: List<Step>) : UiModel()
-    }
-
-    companion object {
-
-        const val RECIPE_FRAGMENT_IN_BACKSTACK = "recipeFragment"
-
-        @JvmStatic
-        fun newInstance(selectedItemId: Int) = RecipeFragment().apply {
-            arguments = Bundle().apply {
-                putInt(SELECTED_ITEM, selectedItemId)
-            }
-        }
     }
 }

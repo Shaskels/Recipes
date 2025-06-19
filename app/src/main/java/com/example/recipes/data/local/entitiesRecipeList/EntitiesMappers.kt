@@ -1,4 +1,4 @@
-package com.example.recipes.data.local.entities
+package com.example.recipes.data.local.entitiesRecipeList
 
 import com.example.recipes.domain.Ingredient
 import com.example.recipes.domain.Recipe

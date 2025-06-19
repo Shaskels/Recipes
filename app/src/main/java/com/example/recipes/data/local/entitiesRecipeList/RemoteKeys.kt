@@ -1,12 +1,13 @@
-package com.example.recipes.data.local.entities
+package com.example.recipes.data.local.entitiesRecipeList
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.recipes.data.local.entities.RemoteKeys.Companion.TABLE_NAME
+import com.example.recipes.data.local.entitiesRecipeList.RemoteKeys.Companion.TABLE_NAME
 
 @Entity(tableName = TABLE_NAME)
 data class RemoteKeys(
     @PrimaryKey
+    val id: Int,
     val recipeId: Int,
     val prevKey: Int?,
     val nextKey: Int?,

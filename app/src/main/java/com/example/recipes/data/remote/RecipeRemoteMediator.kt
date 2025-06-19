@@ -7,8 +7,8 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.example.recipes.data.local.RecipeDatabase
-import com.example.recipes.data.local.entities.RecipeEntity
-import com.example.recipes.data.local.entities.RemoteKeys
+import com.example.recipes.data.local.entitiesRecipeList.RecipeEntity
+import com.example.recipes.data.local.entitiesRecipeList.RemoteKeys
 import com.example.recipes.data.remote.datasource.RemoteDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -18,7 +18,7 @@ import java.io.IOException
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 
-private const val STARTING_PAGE_INDEX = 1
+private const val STARTING_PAGE_INDEX = 0
 
 @OptIn(ExperimentalPagingApi::class)
 class RecipeRemoteMediator(
@@ -78,24 +78,22 @@ class RecipeRemoteMediator(
             val apiResponse =
                 remoteDataSource.getRecipes(
                     apiQuery,
-                    (page - 1) * state.config.pageSize,
+                    page * state.config.pageSize,
                     state.config.pageSize
                 )
-
-            val recipes = apiResponse
-            Log.e("Mediator", recipes.size.toString())
-            val endOfPaginationReached = recipes.isEmpty()
+            Log.e("Mediator", apiResponse.size.toString())
+            val endOfPaginationReached = apiResponse.isEmpty()
             recipeDatabase.withTransaction {
                 // clear all tables in the database
-                if (loadType == LoadType.REFRESH) {
-                    recipeDatabase.remoteKeyDao().clearRemoteKeys()
-                    recipeDatabase.recipeDao().clearRecipes()
-                }
+//                if (loadType == LoadType.REFRESH) {
+//                    recipeDatabase.remoteKeyDao().clearRemoteKeys()
+//                    recipeDatabase.recipeDao().clearRecipes()
+//                }
                 val prevKey = if (page == STARTING_PAGE_INDEX) null else page - 1
                 val nextKey = if (endOfPaginationReached) null else page + 1
-                var ids = (page - 1) * state.config.pageSize - 1
+                var ids = page * state.config.pageSize - 1
                 val recipeEntities =
-                    recipes.map {
+                    apiResponse.map {
                         ids += 1
                         RecipeEntity(
                             id = ids,
@@ -105,16 +103,17 @@ class RecipeRemoteMediator(
                             readyInMinutes = null,
                             aggregateLikes = null,
                             spoonacularScore = null,
-                            lastUpdate = System.currentTimeMillis()
+                            lastUpdate = System.currentTimeMillis(),
                         )
                     }
-                ids = (page - 1) * state.config.pageSize - 1
-                val keys = recipes.map {
+                ids = page * state.config.pageSize - 1
+                recipeDatabase.recipeDao().insertAll(recipeEntities)
+                val keys = apiResponse.map {
                     ids += 1
-                    RemoteKeys(recipeId = ids, prevKey = prevKey, nextKey = nextKey)
+                    RemoteKeys(id = ids, recipeId = it.id, prevKey = prevKey, nextKey = nextKey)
                 }
                 recipeDatabase.remoteKeyDao().insertAll(keys)
-                recipeDatabase.recipeDao().insertAll(recipeEntities)
+
             }
             return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (e: IOException) {

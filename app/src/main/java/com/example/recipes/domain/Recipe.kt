@@ -9,4 +9,5 @@ data class Recipe (
     val ingredients: List<Ingredient>?,
     val cookTime: Int?,
     val instructions: List<Step>?,
+    var isLiked: Boolean = false,
 )

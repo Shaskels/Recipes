@@ -22,6 +22,12 @@ class RoomModule {
         return Room.databaseBuilder(context, RecipeDatabase::class.java, "recipe_db").build()
     }
 
+//    @Provides
+//    @Singleton
+//    fun provideMyRecipeDatabase(@ApplicationContext context: Context): MyRecipeDatabase {
+//        return Room.databaseBuilder(context, MyRecipeDatabase::class.java, "my_recipe_db").build()
+//    }
+
     @Provides
     fun provideRecipeDao(recipeDatabase: RecipeDatabase): RecipeDao{
         return recipeDatabase.recipeDao()
