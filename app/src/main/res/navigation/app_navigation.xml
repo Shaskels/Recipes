@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@+id/home_dest">
+
+    <fragment
+        android:id="@+id/home_dest"
+        android:name="com.example.recipes.ui.RecipeListFragment"
+        android:label="recipeList"
+        tools:layout="@layout/fragment_recipe_list">
+
+        <action
+            android:id="@+id/next_action"
+            app:destination="@+id/recipe"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/recipe"
+        android:name="com.example.recipes.ui.RecipeFragment"
+        android:label="recipe"
+        tools:layout="@layout/fragment_recipe">
+
+        <argument
+            android:name="selectedItem"
+            app:argType="integer"
+            android:defaultValue="1"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/my_recipes"
+        android:name="com.example.recipes.ui.MyRecipesFragment"
+        tools:layout="@layout/fragment_my_recipes">
+
+        <action
+            android:id="@+id/next_action"
+            app:destination="@+id/my_recipe"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/my_recipe"
+        android:name="com.example.recipes.ui.RecipeFragment"
+        tools:layout="@layout/fragment_recipe">
+        <argument
+            android:name="selectedItem"
+            app:argType="integer"
+            android:defaultValue="1"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/my_profile"
+        android:name="com.example.recipes.ui.MyProfileFragment"
+        tools:layout="@layout/fragment_my_profile">
+
+
+    </fragment>
+
+</navigation>

@@ -12,7 +12,7 @@
         android:layout_margin="5dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:text="Рецепт" />
+        android:text="Recipe" />
 
     <TextView
         android:id="@+id/steps"

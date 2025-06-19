@@ -7,8 +7,8 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
-import com.example.recipes.data.local.entities.RecipeEntity
-import com.example.recipes.data.local.entities.RecipeWithInfo
+import com.example.recipes.data.local.entitiesRecipeList.RecipeEntity
+import com.example.recipes.data.local.entitiesRecipeList.RecipeWithInfo
 
 @Dao
 interface RecipeDao {
@@ -37,4 +37,5 @@ interface RecipeDao {
 
     @Query("DELETE FROM ${RecipeEntity.TABLE_NAME}")
     suspend fun clearRecipes()
+
 }

@@ -1,9 +1,9 @@
-package com.example.recipes.data.local.entities
+package com.example.recipes.data.local.entitiesRecipeList
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.recipes.data.local.entities.RecipeEntity.Companion.TABLE_NAME
+import com.example.recipes.data.local.entitiesRecipeList.RecipeEntity.Companion.TABLE_NAME
 
 @Entity(tableName = TABLE_NAME)
 data class RecipeEntity (

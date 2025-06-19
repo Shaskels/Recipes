@@ -6,10 +6,10 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import com.example.recipes.data.local.RecipeDatabase
-import com.example.recipes.data.local.entities.IngredientsEntity
-import com.example.recipes.data.local.entities.RecipeEntity
-import com.example.recipes.data.local.entities.StepsEntity
-import com.example.recipes.data.local.entities.toRecipe
+import com.example.recipes.data.local.entitiesRecipeList.IngredientsEntity
+import com.example.recipes.data.local.entitiesRecipeList.RecipeEntity
+import com.example.recipes.data.local.entitiesRecipeList.StepsEntity
+import com.example.recipes.data.local.entitiesRecipeList.toRecipe
 import com.example.recipes.data.remote.RecipeRemoteMediator
 import com.example.recipes.data.remote.datasource.RemoteDataSource
 import com.example.recipes.data.remote.entities.toRecipe
@@ -48,11 +48,11 @@ class RecipeRepositoryImpl @Inject constructor(
                     recipe.idInApi,
                     recipe.title,
                     recipe.image,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    recipe.spoonacularScore,
+                    recipe.aggregateLikes,
+                    arrayListOf(),
+                    recipe.readyInMinutes,
+                    arrayListOf()
                 )
             }
         }
@@ -66,7 +66,7 @@ class RecipeRepositoryImpl @Inject constructor(
             val recipeRequest = remoteDataSource.getRecipeById(idInApi)
             val ingredients = recipeRequest.extendedIngredients.map {
                 IngredientsEntity(
-                    it.id,
+                    0,
                     res.recipeEntity.id,
                     it.name,
                     it.amount,

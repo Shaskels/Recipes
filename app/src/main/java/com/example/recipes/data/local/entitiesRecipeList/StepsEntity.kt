@@ -1,12 +1,12 @@
-package com.example.recipes.data.local.entities
+package com.example.recipes.data.local.entitiesRecipeList
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.example.recipes.data.local.entities.StepsEntity.Companion.ID_COLUMN_NAME
-import com.example.recipes.data.local.entities.StepsEntity.Companion.RECIPE_ID_COLUMN_NAME
-import com.example.recipes.data.local.entities.StepsEntity.Companion.TABLE_NAME
+import com.example.recipes.data.local.entitiesRecipeList.StepsEntity.Companion.ID_COLUMN_NAME
+import com.example.recipes.data.local.entitiesRecipeList.StepsEntity.Companion.RECIPE_ID_COLUMN_NAME
+import com.example.recipes.data.local.entitiesRecipeList.StepsEntity.Companion.TABLE_NAME
 
 @Entity(
     tableName = TABLE_NAME,

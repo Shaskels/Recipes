@@ -1,12 +1,12 @@
-package com.example.recipes.data.local.entities
+package com.example.recipes.data.local.entitiesRecipeList
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.example.recipes.data.local.entities.IngredientsEntity.Companion.ID_COLUMN_NAME
-import com.example.recipes.data.local.entities.IngredientsEntity.Companion.RECIPE_ID_COLUMN_NAME
-import com.example.recipes.data.local.entities.IngredientsEntity.Companion.TABLE_NAME
+import com.example.recipes.data.local.entitiesRecipeList.IngredientsEntity.Companion.ID_COLUMN_NAME
+import com.example.recipes.data.local.entitiesRecipeList.IngredientsEntity.Companion.RECIPE_ID_COLUMN_NAME
+import com.example.recipes.data.local.entitiesRecipeList.IngredientsEntity.Companion.TABLE_NAME
 
 @Entity(
     tableName = TABLE_NAME,
@@ -18,7 +18,7 @@ import com.example.recipes.data.local.entities.IngredientsEntity.Companion.TABLE
         onDelete = ForeignKey.CASCADE,)]
 )
 data class IngredientsEntity (
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(ID_COLUMN_NAME)
     val id: Int,
     @ColumnInfo(RECIPE_ID_COLUMN_NAME, index = true)
