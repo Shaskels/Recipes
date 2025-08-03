@@ -1,4 +1,4 @@
-package com.example.recipes.domain
+package com.example.recipes.domain.entity
 
 data class Recipe (
     val idInApi: Int,

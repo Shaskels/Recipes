@@ -9,7 +9,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.DiffUtil
 import com.example.recipes.R
-import com.example.recipes.domain.Recipe
+import com.example.recipes.domain.entity.Recipe
 import com.squareup.picasso.Picasso
 
 class RecipeListAdapter(private val onItemClick: OnItemClick, private val onLikeButtonClick: OnLikeButtonClick) :
@@ -38,7 +38,7 @@ class RecipeListAdapter(private val onItemClick: OnItemClick, private val onLike
         holder.recipeName.text = getItem(position)?.name
         Picasso.get().load(getItem(position)?.image).placeholder(R.drawable.nophoto).error(R.drawable.nophoto).into(holder.recipeImage)
         holder.itemView.setOnClickListener { getItem(position)?.let { item -> onItemClick.onClick(item) } }
-        if (getItem(position)?.isLiked == true) holder.likeButton.isSelected = true
+        holder.likeButton.isSelected = getItem(position)?.isLiked == true
         holder.likeButton.setOnClickListener {
             holder.likeButton.isSelected = !holder.likeButton.isSelected
             getItem(position)?.let { it1 -> onLikeButtonClick.onClick(it1, holder.likeButton.isSelected) }

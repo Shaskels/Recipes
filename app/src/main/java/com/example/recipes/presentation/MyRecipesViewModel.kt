@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.recipes.domain.Recipe
+import com.example.recipes.domain.entity.Recipe
 import com.example.recipes.domain.usecases.AddMyRecipe
 import com.example.recipes.domain.usecases.DeleteMyRecipe
 import com.example.recipes.domain.usecases.GetMyRecipes

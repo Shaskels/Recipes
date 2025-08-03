@@ -1,7 +1,7 @@
 package com.example.recipes.presentation.myRecipesList
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.recipes.domain.Recipe
+import com.example.recipes.domain.entity.Recipe
 
 class DiffUtilCallback(private val oldItems: List<Recipe>,
                        private val newItems: List<Recipe>): DiffUtil.Callback() {

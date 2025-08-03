@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipes.R
-import com.example.recipes.domain.Ingredient
-import com.example.recipes.domain.Recipe
-import com.example.recipes.domain.Step
+import com.example.recipes.domain.entity.Ingredient
+import com.example.recipes.domain.entity.Recipe
+import com.example.recipes.domain.entity.Step
 import com.example.recipes.presentation.RecipeListViewModel
 import com.example.recipes.presentation.RecipeState
 import com.example.recipes.presentation.ingredientList.IngredientsListAdapter
@@ -40,7 +40,7 @@ class RecipeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as MainActivity).supportActionBar?.title = "Recipes"
+        (activity as MainActivity).supportActionBar?.title = getString(R.string.recipes_list_title)
         val safeArgs: RecipeFragmentArgs by navArgs()
         selectedItemId = safeArgs.selectedItem
     }

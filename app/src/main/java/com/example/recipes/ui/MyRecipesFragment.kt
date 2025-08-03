@@ -23,7 +23,8 @@ class MyRecipesFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (activity as MainActivity).supportActionBar?.title =  "My recipes"
+        (activity as MainActivity).supportActionBar?.show()
+        (activity as MainActivity).supportActionBar?.title =  getString(R.string.my_recipes_list_title)
     }
 
     override fun onCreateView(

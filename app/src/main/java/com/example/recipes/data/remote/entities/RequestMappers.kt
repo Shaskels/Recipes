@@ -1,8 +1,8 @@
 package com.example.recipes.data.remote.entities
 
-import com.example.recipes.domain.Ingredient
-import com.example.recipes.domain.Recipe
-import com.example.recipes.domain.Step
+import com.example.recipes.domain.entity.Ingredient
+import com.example.recipes.domain.entity.Recipe
+import com.example.recipes.domain.entity.Step
 
 fun RecipeRequest.toRecipe() = Recipe(
     idInApi = id,

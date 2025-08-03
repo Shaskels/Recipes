@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipes.R
-import com.example.recipes.domain.Ingredient
+import com.example.recipes.domain.entity.Ingredient
 
 class IngredientViewHolder(view: View): RecyclerView.ViewHolder(view){
     private val name = view.findViewById<TextView>(R.id.ingredientName)

@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">Recipes</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="login_underlined"><u>Login</u></string>
+    <string name="register_underlined"><u>Register</u></string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="recipes_list_title">Recipes</string>
+    <string name="my_recipes_list_title">My recipes</string>
+    <string name="my_profile_title">My profile</string>
+    <string name="user_name">Name</string>
+    <string name="user_age">Age</string>
 </resources>
