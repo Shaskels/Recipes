@@ -7,6 +7,7 @@ plugins {
     id("androidx.navigation.safeargs")
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 val apikeyPropertiesFile = rootProject.file("apikey.properties")
@@ -50,6 +51,11 @@ android {
 
 dependencies {
 
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+    implementation(libs.firebase.database)
     val nav_version = "2.9.0"
 
     // Jetpack Compose integration

@@ -1,6 +1,6 @@
 package com.example.recipes.domain.repository
 
-import com.example.recipes.domain.Recipe
+import com.example.recipes.domain.entity.Recipe
 
 interface MyRecipeRepository {
 

@@ -1,7 +1,7 @@
 package com.example.recipes.domain.repository
 
 import androidx.paging.PagingData
-import com.example.recipes.domain.Recipe
+import com.example.recipes.domain.entity.Recipe
 import kotlinx.coroutines.flow.Flow
 
 interface RecipesRepository {

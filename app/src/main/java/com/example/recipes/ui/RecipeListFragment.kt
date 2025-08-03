@@ -2,12 +2,10 @@ package com.example.recipes.ui
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import android.text.Layout.Directions
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.SearchView
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -39,12 +37,9 @@ class RecipeListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (activity as MainActivity).supportActionBar?.show()
+        (activity as MainActivity).supportActionBar?.title =  getString(R.string.recipes_list_title)
         return inflater.inflate(R.layout.fragment_recipe_list, container, false)
-    }
-
-    override fun onResume() {
-        (activity as MainActivity).supportActionBar?.title =  "Recipes"
-        super.onResume()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -13,7 +13,7 @@ import com.example.recipes.data.local.entitiesRecipeList.toRecipe
 import com.example.recipes.data.remote.RecipeRemoteMediator
 import com.example.recipes.data.remote.datasource.RemoteDataSource
 import com.example.recipes.data.remote.entities.toRecipe
-import com.example.recipes.domain.Recipe
+import com.example.recipes.domain.entity.Recipe
 import com.example.recipes.domain.repository.RecipesRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

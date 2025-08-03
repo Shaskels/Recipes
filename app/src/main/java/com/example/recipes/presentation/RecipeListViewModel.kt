@@ -8,15 +8,16 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.example.recipes.domain.Recipe
+import com.example.recipes.domain.entity.Recipe
 import com.example.recipes.domain.usecases.GetAllRecipes
 import com.example.recipes.domain.usecases.GetMyRecipes
 import com.example.recipes.domain.usecases.GetSelectedRecipe
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.flatMapLatest
@@ -40,18 +41,19 @@ class RecipeListViewModel @Inject constructor(
     private val _search = MutableStateFlow("")
     private val search = _search.asStateFlow()
 
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     var recipes: Flow<PagingData<Recipe>> =
         search.debounce(900).flatMapLatest { query ->
             Log.i("ViewModel", query)
             val job = viewModelScope.async {
                 getMyRecipes()
             }
-            val res = job.await()
+            val myRecipes = job.await()
             getAllRecipes(query).map { pagingData ->
-                pagingData.map {
-                    if (res.find { p -> p.idInApi == it.idInApi } != null)
-                        it.isLiked = true
-                    it
+                pagingData.map {recipe ->
+                    if (myRecipes.find { myRecipe -> myRecipe.idInApi == recipe.idInApi } != null)
+                        recipe.isLiked = true
+                    recipe
                 }
             }.cachedIn(viewModelScope)
         }

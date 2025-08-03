@@ -8,7 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipes.R
-import com.example.recipes.domain.Recipe
+import com.example.recipes.domain.entity.Recipe
 import com.example.recipes.presentation.RecipeListAdapter.OnItemClick
 import com.example.recipes.presentation.RecipeListAdapter.OnLikeButtonClick
 import com.squareup.picasso.Picasso
@@ -19,7 +19,7 @@ class MyRecipesListAdapter(
 ) :
     RecyclerView.Adapter<MyRecipesListAdapter.RecipeViewHolder>() {
 
-    val items = ArrayList<Recipe>()
+    private val items = ArrayList<Recipe>()
 
     class RecipeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val recipeImage: ImageView

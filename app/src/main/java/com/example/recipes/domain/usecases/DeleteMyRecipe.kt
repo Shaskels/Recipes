@@ -7,8 +7,6 @@ import javax.inject.Inject
 
 class DeleteMyRecipe @Inject constructor(private val myRecipeRepository: MyRecipeRepository) {
     suspend operator fun invoke(id: Int) {
-        withContext(Dispatchers.IO) {
-            myRecipeRepository.deleteRecipe(id)
-        }
+        myRecipeRepository.deleteRecipe(id)
     }
 }

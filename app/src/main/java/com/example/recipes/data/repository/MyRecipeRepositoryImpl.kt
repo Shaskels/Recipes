@@ -8,7 +8,7 @@ import com.example.recipes.data.local.entitiesRecipeList.StepsEntity
 import com.example.recipes.data.local.entitiesRecipeList.toRecipe
 import com.example.recipes.data.remote.datasource.RemoteDataSource
 import com.example.recipes.data.remote.entities.toRecipe
-import com.example.recipes.domain.Recipe
+import com.example.recipes.domain.entity.Recipe
 import com.example.recipes.domain.repository.MyRecipeRepository
 import javax.inject.Inject
 

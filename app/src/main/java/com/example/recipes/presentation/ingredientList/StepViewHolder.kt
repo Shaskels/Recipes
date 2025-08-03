@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.recipes.R
-import com.example.recipes.domain.Step
+import com.example.recipes.domain.entity.Step
 
 class StepViewHolder(view: View): RecyclerView.ViewHolder(view){
     private val recipeSteps = view.findViewById<TextView>(R.id.steps)
